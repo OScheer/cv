@@ -9,6 +9,9 @@ design:
   # Default section spacing
   spacing: '6rem'
 
+cascade:
+  - share: false
+
 sections:
   - block: markdown
     id: custom-profile
