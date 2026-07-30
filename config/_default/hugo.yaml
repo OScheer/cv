@@ -47,7 +47,7 @@ disableAliases: false
 ignoreLogs:
   - 'sections-none-/de/'
 outputs:
-  home: [HTML, RSS, LLM]
+  home: [HTML, RSS]
   section: [HTML, RSS]
 imaging:
   resampleFilter: lanczos
