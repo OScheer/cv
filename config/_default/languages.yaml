@@ -1,22 +1,53 @@
-# Languages
-#   Create a section for each of your site's languages.
-#   Documentation: https://docs.hugoblox.com/reference/language/
-
-# Default language
 en:
-  languageCode: en-us
-  # Uncomment for multi-lingual sites, and move English content into `en` sub-folder.
-  #contentDir: content/en
+  locale: en-US
+  label: English
+  weight: 1
+  contentDir: content/en
+  title: "Thomas Oliver Scheer"
+  params:
+    description: "IT Coordinator and Requirements Engineer specializing in Atlassian tools and agile methodologies."
+  menu:
+    main:
+      - name: Bio
+        identifier: 760b23e1
+        url: /en/
+        weight: 10
+      - name: Experience
+        identifier: c5f52e09
+        url: /en/experience/
+        weight: 20
+      - name: Projects
+        identifier: 43be1cc2
+        url: /en/projects/
+        weight: 30
+      - name: Publications
+        identifier: 08cdd450
+        url: /en/#papers
+        weight: 40
 
-# Uncomment the lines below to configure your website in a second language.
-#zh:
-#  languageCode: zh-Hans
-#  contentDir: content/zh
-#  title: Chinese website title...
-#  params:
-#    description: Site description in Chinese...
-#  menu:
-#    main:
-#      - name: 传
-#        url: '#about'
-#        weight: 1
+de:
+  locale: de-DE
+  label: Deutsch
+  weight: 2
+  contentDir: content/de
+  title: "Thomas Oliver Scheer"
+  params:
+    description: "IT-Koordinator und Requirements Engineer mit Schwerpunkt Atlassian-Tools und agilen Methoden."
+  menu:
+    main:
+      - name: Bio
+        identifier: 760b23e1
+        url: /
+        weight: 10
+      - name: Lebenslauf
+        identifier: c5f52e09
+        url: erfahrung/
+        weight: 20
+      - name: Projekte
+        identifier: 43be1cc2
+        url: projekte/
+        weight: 30
+      - name: Publikationen
+        identifier: 08cdd450
+        url: /#publikationen
+        weight: 40

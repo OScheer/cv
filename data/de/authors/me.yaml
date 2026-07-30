@@ -1,0 +1,106 @@
+role: "Sachbearbeiter / IT-Koordinator"
+bio: |
+  Oliver Scheer ist ein erfahrener IT-Experte und ehemaliger wissenschaftlicher Forscher mit einem breiten Hintergrund in den Bereichen App-Entwicklung, IT-Koordination und molekularbiologischer Forschung.
+
+  Aktuell tätig in der IT-Koordination und im Requirements Engineering mit starkem Fokus auf Atlassian-Tools wie Jira und Confluence sowie im externen Provider-Management.
+interests:
+  - "IT-Koordination"
+  - "Digitalisierung"
+  - "Technologie"
+  - "Künstliche Intelligenz"
+  - "Interdisziplinäre Wissenschaft"
+  - "Ehrenamt"
+  - "Ökologie"
+education:
+  - degree: "MSc Bioinformatik"
+    institution: "Universität Leipzig"
+    start: "2014-10-01"
+    end: "2016-08-31"
+  - degree: "BSc Biochemie"
+    institution: "Universität Leipzig"
+    start: "2011-10-01"
+    end: "2014-09-30"
+  - degree: "Ausbildung Biologielaborant"
+    institution: "Helmholtz-Zentrum für Umweltforschung (UFZ)"
+    start: "2007-09-01"
+    end: "2011-02-28"
+experience:
+  - role: "Sachbearbeiter – Atlassian Cloud Strategy, Quality Engineering und Agile Methoden"
+    org: "Deutsche Bundesbank"
+    start: "2024-02-01"
+    end: ""
+    summary: |
+      Schwerpunkt auf Atlassian-Cloud-Strategie, Quality Engineering und agile Arbeitsweisen. Verantwortlich für den strategischen Ausbau des Jira- und Confluence-Angebots sowie fachliche Unterstützung auf Expertenebene.
+    button:
+      text: "Portfolio anzeigen"
+      url: "/de/"
+  - role: "Sachbearbeiter – App-Entwicklung"
+    org: "Deutsche Bundesbank"
+    start: "2021-06-01"
+    end: "2024-01-31"
+    summary: |
+      Mobile App-Entwicklung und Dienstleistungen für IT-Arbeitsplatz-Apps. Requirements Engineering, teilweise Projektmanagement-Aufgaben und Koordination externer Dienstleister.
+  - role: "Mobile Developer"
+    org: "Preventicus GmbH"
+    start: "2019-03-01"
+    end: "2021-04-30"
+    summary: |
+      Mobile Entwickler für die Heartbeats-App mit Schwerpunkt auf Android-Smartphone-Entwicklung und -Optimierung.
+  - role: "Wissenschaftlicher Mitarbeiter"
+    org: "Helmholtz-Zentrum für Umweltforschung (UFZ)"
+    start: "2016-09-01"
+    end: "2018-12-31"
+    summary: |
+      Erforschung von lncRNA-Funktionen in der Netzhautentwicklung und -regeneration, einschließlich der Regeneration von retinalen Neuronen im Zebrafisch nach Verletzung durch Redifferenzierung.
+  - role: "Wissenschaftlicher Mitarbeiter"
+    org: "Universität Leipzig – Institut für Bioinformatik"
+    start: "2015-06-01"
+    end: "2016-06-30"
+    summary: |
+      Arbeit mit Bioinformatik-Tools, Entwicklung von Skripten und Pipelines sowie Proteinvisualisierung und -modellierung.
+  - role: "Studentische Hilfskraft"
+    org: "Universität Leipzig – Klinik für Augenheilkunde"
+    start: "2012-10-01"
+    end: "2015-05-31"
+    summary: |
+      Zellkulturarbeiten, Western Blots, ELISAs, Gelelektrophorese, Transformationen, Transfektionen sowie Reinigung von DNA und Proteinen.
+  - role: "Biologielaborant"
+    org: "Helmholtz-Zentrum für Umweltforschung (UFZ)"
+    start: "2011-02-01"
+    end: "2011-09-30"
+    summary: |
+      Chemotaxis-Assays sowie Kultivierung von Bakterien und Pilzen für biochemische Tests.
+skills:
+  - name: "Fachliche Kompetenzen"
+    items:
+      - label: "Atlassian-Administration & -Strategie"
+      - label: "Agile Methoden & Prozessbegleitung"
+      - label: "Requirements Engineering & Quality Engineering"
+  - name: "Forschung & Kommunikation"
+    items:
+      - label: "Analytisches Denken & Problemlösung"
+      - label: "Technische Dokumentation & Wissenstransfer"
+      - label: "Projektkoordination & Teil-Projektleitung"
+  - name: "Programmierung"
+    items:
+      - label: "Mobile App-Entwicklung"
+      - label: "Scripting & Pipeline-Entwicklung"
+      - label: "Python"
+  - name: "Über den Lebenslauf hinaus"
+    items:
+      - label: "Reisen"
+      - label: "Ehrenamt"
+      - label: "Kochen"
+languages:
+  - name: "Deutsch"
+    level: 5
+    label: "Muttersprache"
+  - name: "English"
+    level: 4
+    label: "Fließend"
+  - name: "French"
+    level: 2
+    label: "Grundkenntnisse"
+  - name: "Japanese"
+    level: 1
+    label: "A1"

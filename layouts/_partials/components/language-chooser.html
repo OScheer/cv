@@ -1,0 +1,28 @@
+{{- $page := .page }}
+{{- $currentLang := $page.Lang }}
+{{- $deUrl := "" }}
+{{- $enUrl := "" }}
+
+{{- /* Prefer translated page if available; fall back to language home */}}
+{{- range $page.Translations }}
+  {{- if eq .Lang "de" }}{{ $deUrl = .RelPermalink }}{{ end }}
+  {{- if eq .Lang "en" }}{{ $enUrl = .RelPermalink }}{{ end }}
+{{- end }}
+{{- range hugo.Sites }}
+  {{- if and (eq .Language.Lang "de") (not $deUrl) }}{{ $deUrl = .Home.RelPermalink }}{{ end }}
+  {{- if and (eq .Language.Lang "en") (not $enUrl) }}{{ $enUrl = .Home.RelPermalink }}{{ end }}
+{{- end }}
+
+<div class="flex items-center rounded-md border border-white/20 overflow-hidden text-xs font-semibold leading-none">
+  {{- if eq $currentLang "de" }}
+    <span class="px-2 py-1 text-white bg-primary-600">DE</span>
+  {{- else }}
+    <a href="{{ $deUrl }}" class="px-2 py-1 text-white/80 hover:text-white transition-colors">DE</a>
+  {{- end }}
+  <span class="text-white/30 select-none">|</span>
+  {{- if eq $currentLang "en" }}
+    <span class="px-2 py-1 text-white bg-primary-600">EN</span>
+  {{- else }}
+    <a href="{{ $enUrl }}" class="px-2 py-1 text-white/80 hover:text-white transition-colors">EN</a>
+  {{- end }}
+</div>

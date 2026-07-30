@@ -19,11 +19,11 @@ hugoblox:
     # Schema.org type for structured data
     type: person # person | organization | local_business
     # Site meta description for search engines and social sharing
-    description: "The highly-customizable Hugo Academic theme powered by HugoBlox Kit. Easily create your personal academic website."
+    description: "IT-Koordinator und Requirements Engineer mit Schwerpunkt Atlassian-Tools und agilen Methoden."
     # Social accounts (used for meta tags like Twitter Cards)
     social:
       twitter: "MakeOwnable" # Twitter/X handle for Twitter Cards (without @)
-    tagline: "Agile | Deutsche Bundesbank "
+    tagline: "IT-Koordination | Deutsche Bundesbank"
 
   # ────────────────────────────────────────────────────────────────────────────
   # THEME
@@ -91,7 +91,7 @@ hugoblox:
     search: true
     theme_toggle: true
     theme_picker: false
-    language_switcher: false
+    language_switcher: true
     # Call-to-action button
     cta:
       enable: false
@@ -240,9 +240,9 @@ hugoblox:
   # Regional formatting preferences
   # ────────────────────────────────────────────────────────────────────────────
   locale:
-    date_format: "Jan 2, 2006" # Go time format
-    time_format: "3:04 PM"
-    address_format: en-us
+    date_format: "2. Jan 2006" # Go time format
+    time_format: "15:04"
+    address_format: de-de
 
   # ────────────────────────────────────────────────────────────────────────────
   # SECURITY

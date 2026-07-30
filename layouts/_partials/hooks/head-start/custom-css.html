@@ -1,0 +1,12 @@
+<!-- HBX HOOK: custom-css -->
+<style>
+/* Fix: EN homepage gets my-10 incorrectly because Hugo ignores type: landing for language-root home pages */
+html[lang="en"] .page-body {
+  margin-block-start: 0 !important;
+}
+</style>
+{{- $iconPng := resources.Get "media/icon.png" -}}
+{{- if $iconPng -}}
+  {{- $icon32 := $iconPng.Resize "32x32" -}}
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ $icon32.RelPermalink }}">
+{{- end -}}

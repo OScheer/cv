@@ -1,0 +1,131 @@
+---
+schema: "hugoblox/author/v1"
+slug: "me"
+is_owner: true
+name:
+  display: "Oliver Scheer"
+  given: "Thomas Oliver"
+  family: "Scheer"
+postnominals:
+  - "MSc"
+  - "BSc"
+status:
+  icon: "🚀"
+role: "Clerk / IT Coordinator"
+bio: |
+  Oliver Scheer is an experienced IT professional and former scientific researcher with a broad background spanning app development, IT coordination, and molecular biology research.
+
+  Currently working in IT coordination and requirements engineering, with a strong focus on Atlassian tools such as Jira and Confluence, as well as external provider management.
+affiliations:
+  - name: "Deutsche Bundesbank"
+    url: "https://www.bundesbank.de/"
+links:
+  - icon: "at-symbol"
+    url: "mailto:oliver.scheer@example.com"
+    label: "E-mail Me"
+  - icon: "brands/github"
+    url: "https://github.com/OScheer"
+  - icon: "brands/linkedin"
+    url: "https://www.linkedin.com/in/thomas-oliver-scheer/"
+interests:
+  - "IT Coordination"
+  - "Digitalization"
+  - "Tech"
+  - "AI"
+  - "Interdisciplinary Science"
+  - "Volunteering"
+  - "Ecology"
+education:
+  - degree: "MSc Bioinformatics"
+    institution: "University of Leipzig"
+    start: "2014-10-01"
+    end: "2016-08-31"
+  - degree: "BSc Biochemistry"
+    institution: "University of Leipzig"
+    start: "2011-10-01"
+    end: "2014-09-30"
+  - degree: "Trainee Biology Laboratory Technician"
+    institution: "Helmholtz Centre for Environmental Research (UFZ)"
+    start: "2007-09-01"
+    end: "2011-02-28"
+experience:
+  - role: "Clerk - Atlassian Cloud Strategy, Quality Engineering and Agile Methods"
+    org: "Deutsche Bundesbank"
+    start: "2024-02-01"
+    end: ""
+    summary: |
+      Focuses on Atlassian cloud strategy, quality engineering, and agile methodologies. Responsible for the strategic expansion and general offerings of Jira and Confluence, as well as providing expert-level technical support.
+    button:
+      text: "View portfolio"
+      url: "/en/"
+  - role: "Clerk - App Development"
+    org: "Deutsche Bundesbank"
+    start: "2021-06-01"
+    end: "2024-01-31"
+    summary: |
+      Worked on mobile application development and services for IT workplace apps. Handled requirements engineering, took on partial project management tasks, and coordinated external service providers for service delivery.
+  - role: "Mobile Developer"
+    org: "Preventicus GmbH"
+    start: "2019-03-01"
+    end: "2021-04-30"
+    summary: |
+      Worked as a mobile developer for the Heartbeats app with a focus on Android smartphone development and optimization.
+  - role: "Research Assistant"
+    org: "Helmholtz Centre for Environmental Research (UFZ)"
+    start: "2016-09-01"
+    end: "2018-12-31"
+    summary: |
+      Researched lncRNA functions in retina development and regeneration, including the regeneration of retinal neurons in zebrafish after injury through redifferentiation.
+  - role: "Research Assistant"
+    org: "Leipzig University – Institute of Bioinformatics"
+    start: "2015-06-01"
+    end: "2016-06-30"
+    summary: |
+      Worked with bioinformatics tools, developed scripts and pipelines, and performed protein visualization and modeling.
+  - role: "Student Assistant"
+    org: "Leipzig University – Department of Ophthalmology"
+    start: "2012-10-01"
+    end: "2015-05-31"
+    summary: |
+      Conducted cell culture work as well as Western blots, ELISAs, gel electrophoresis, transformations, transfections, and purification of DNA and proteins.
+  - role: "Biology Laboratory Technician"
+    org: "Helmholtz Centre for Environmental Research (UFZ)"
+    start: "2011-02-01"
+    end: "2011-09-30"
+    summary: |
+      Conducted chemotactic assays and cultivated bacteria and fungi for biochemical testing.
+skills:
+  - name: "Technical Skills"
+    items:
+      - label: "Atlassian Administration & Strategy"
+      - label: "Agile Methods & Process Support"
+      - label: "Requirements Engineering & Quality Engineering"
+  - name: "Research & Communication"
+    items:
+      - label: "Analytical Thinking & Problem Solving"
+      - label: "Technical Documentation & Knowledge Transfer"
+      - label: "Project Coordination & Partial Project Leadership"
+  - name: "Programming"
+    items:
+      - label: "Mobile App Development"
+      - label: "Scripting & Pipeline Development"
+      - label: "Python"
+  - name: "Beyond the Resume"
+    items:
+      - label: "Traveling"
+      - label: "Volunteering"
+      - label: "Cooking"
+languages:
+  - name: "Deutsch"
+    level: 5
+    label: "Muttersprache"
+  - name: "English"
+    level: 4
+    label: "Fließend"
+  - name: "French"
+    level: 2
+    label: "Grundkenntnisse"
+  - name: "Japanese"
+    level: 1
+    label: "A1"
+---

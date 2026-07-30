@@ -1,34 +1,3 @@
-# Navigation Links
-#   To link a homepage widget, specify the URL as a hash `#` followed by the filename of the
-#     desired widget in your `content/home/` folder.
-#   The weight parameter defines the order that the links will appear in.
-
-main:
-  - name: Bio
-    identifier: 760b23e1
-    url: /
-    weight: 10
-  - name: Experience
-    identifier: c5f52e09
-    url: experience/
-    weight: 20
-  - name: Projects
-    identifier: 43be1cc2
-    url: projects/
-    weight: 30
-  - name: Papers
-    identifier: 08cdd450
-    url: /#papers
-    weight: 40
-  # - name: Talks
-  #   identifier: da5b3c63
-  #   url: /#talks
-  #   weight: 50
-  # - name: News
-  #   identifier: 9bd38a9d
-  #   url: /#news
-  #   weight: 60
-  # - name: Courses
-  #   identifier: 782b1886
-  #   url: courses/
-  #   weight: 70
+# Menus are now defined in languages.yaml per language.
+# This file is kept empty to avoid conflicts with language-specific menus.
+main: []

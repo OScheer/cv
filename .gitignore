@@ -28,6 +28,16 @@ hugo_stats.json
 # Dependencies
 node_modules/
 
+# Lockfiles (pnpm is the package manager, npm lockfile not needed)
+package-lock.json
+
+# ============================================================================
+# Go Modules
+# ============================================================================
+
+# Auto-generated go checksum
+go.sum
+
 # ============================================================================
 # Environment & Configuration
 # ============================================================================
@@ -67,4 +77,3 @@ Desktop.ini
 
 *.log
 npm-debug.log*
-content/notes/
