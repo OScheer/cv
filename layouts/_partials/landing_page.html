@@ -1,0 +1,9 @@
+<div data-pagefind-body>
+{{- $sections := partial "hbx/sections.html" . -}}
+
+{{ range $index, $block := $sections }}
+  {{ if or (not $block.demo) ($block.demo | and (eq (os.Getenv "HUGO_BLOX_DEMO") "true")) }}
+    {{ partial "functions/parse_block_v3" (dict "page" $ "block" $block) }}
+  {{ end }}
+{{ end }}
+</div>
