@@ -16,6 +16,10 @@ en:
         identifier: c5f52e09
         url: /en/experience/
         weight: 20
+      - name: Adventure
+        identifier: 2d41e6a7
+        url: /en/adventure/
+        weight: 25
       - name: Projects
         identifier: 43be1cc2
         url: /en/projects/
@@ -43,6 +47,10 @@ de:
         identifier: c5f52e09
         url: erfahrung/
         weight: 20
+      - name: Abenteuer
+        identifier: 2d41e6a7
+        url: adventure/
+        weight: 25
       - name: Projekte
         identifier: 43be1cc2
         url: projekte/

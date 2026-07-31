@@ -76,6 +76,24 @@ sections:
         </div>
         </div>
   - block: markdown
+    id: adventure-hook
+    content:
+      title: 'Standard-Lebenslauf zu langweilig?'
+      text: |-
+        Betritt meine **Mission Control** und erkunde meinen Weg von der Molekularbiologie in die IT-Koordination als interaktives Point-and-Click Erlebnis.
+
+        <div class="mt-8 flex justify-center">
+        <a href="/de/adventure/" role="button" class="inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-primary-500 to-secondary-500 px-8 py-3.5 text-base font-semibold shadow-lg transition hover:opacity-90 hover:shadow-xl" style="text-decoration:none;color:#fff">
+        <svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="6" x2="10" y1="12" y2="12"/><line x1="8" x2="8" y1="10" y2="14"/><line x1="15" x2="15.01" y1="13" y2="13"/><line x1="18" x2="18.01" y1="11" y2="11"/><rect width="20" height="12" x="2" y="6" rx="2"/></svg>
+        Mission starten
+        </a>
+        </div>
+    design:
+      columns: '1'
+      background:
+        gradient_mesh:
+          enable: true
+  - block: markdown
     content:
       title: '🚀 Meine Mission'
       subtitle: ''
