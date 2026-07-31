@@ -1,492 +1,663 @@
 {{/* ============================================================================
-  Workspace Adventure — Point-and-Click-Explorer (MVP)
+  Adventure — 3-Level Point-and-Click CV Game
 
-  Self-contained SVG scene + progress tracker + modal.
-  Content is localized via .Page.Lang (de / en).
+  Self-contained Hugo shortcode: HTML + scoped CSS + vanilla JS in this file.
+  Icons: Font Awesome 6 (loaded via CDN, deduplicated by the browser).
+
   Usage: {{< adventure >}}
+  Language: localized via .Page.Lang (de / en); strings are serialized into
+  the ADV_DATA JS object before the game script runs.
 ============================================================================ */}}
+
 {{ $lang := .Page.Lang }}
 {{ $home := .Site.Home.RelPermalink }}
 
-{{ $hint := "Tip: Click the glowing objects" }}
-{{ $discovered := "Discovered" }}
-{{ $close := "Close" }}
-{{ $sceneLabel := "Interactive workspace: a desk with a microscope, a kanban monitor and a backpack" }}
-{{ $completeTitle := "Mission Complete" }}
-{{ $completeText := "You explored all three stations. Thanks for visiting my workspace!" }}
-{{ $completeBtn := "Back to the classic CV" }}
+{{/* ------------------------------------------------------------------ */}}
+{{/* EN defaults                                                        */}}
+{{/* ------------------------------------------------------------------ */}}
+{{ $hudTitle   := "Point & Click CV" }}
+{{ $hint       := "Click the glowing objects to explore my journey" }}
+{{ $close      := "Close" }}
+{{ $dialogAria := "Adventure dialog" }}
+{{ $questBadge := "QUEST" }}
+{{ $noscript   := "This adventure requires JavaScript." }}
 
-{{ $s1Aria := "Research station: microscope and test tubes" }}
-{{ $s1Title := "From Data to Structure – Molecular Biology Research" }}
-{{ $s1Text := "At the microscope, raw measurements become three-dimensional structures. Pipettes, test tubes and sequencing runs were my everyday tools while investigating how proteins shape life." }}
+{{ $l1Title := "Level 1 · The Lab · Molecular Biology" }}
+{{ $l1aL    := "Microscope" }}
+{{ $l1aT    := "Examining cells under the microscope. Everything is still very analog." }}
+{{ $l1bL    := "Petri Dish" }}
+{{ $l1bT    := "Cultivating samples. Fascinating — but slow." }}
+{{ $l1cL    := "Sequencing Data" }}
+{{ $l1cT    := "Quest: Save the retina neurons! The sequencing data is massive. Manual processing is no longer possible. You need automation and IT!" }}
+{{ $l1Btn   := "Transition to IT" }}
 
-{{ $s2Aria := "IT station: monitor with a kanban board" }}
-{{ $s2Title := "Mission Control – Agile & Atlassian Coordination" }}
-{{ $s2Text := "On my monitor, epics, sprints and tickets keep every team on track. I coordinate workflows with Jira and Confluence so that everyone knows what matters next." }}
+{{ $l2Title := "Level 2 · The Valley of Chaos · Agile Transition" }}
+{{ $l2aL    := "Confused Colleague" }}
+{{ $l2aT    := "Nobody knows who is working on what right now." }}
+{{ $l2bL    := "Flying Notes" }}
+{{ $l2bT    := "Requirements get lost in the email inbox." }}
+{{ $l2cL    := "Whiteboard" }}
+{{ $l2cT    := "Quest: Bring order to the system! You gather requirements, introduce Jira, and transform chaos into structured Sprints." }}
+{{ $l2Btn   := "Enter Command Center" }}
 
-{{ $s3Aria := "Nature station: backpack, map and tree" }}
-{{ $s3Title := "Field Work – Environmental Education" }}
-{{ $s3Text := "When I leave the lab, I swap the pipette for a compass. At the Falkenhof I share my love of nature and show young people how to care for it responsibly." }}
+{{ $l3Title := "Level 3 · Command Center · IT Coordination" }}
+{{ $l3aL    := "Server Racks" }}
+{{ $l3aT    := "The infrastructure is running stable." }}
+{{ $l3bL    := "Team Dashboard" }}
+{{ $l3bT    := "Transparency across all projects." }}
+{{ $l3cL    := "Main Terminal" }}
+{{ $l3cT    := "Quest: The Final Project. You optimized the processes and unlocked the Atlassian Network. Mission Complete!" }}
+{{ $l3Btn   := "View full CV" }}
 
 {{ if eq $lang "de" }}
-  {{ $hint = "Tipp: Klicke die leuchtenden Objekte an" }}
-  {{ $discovered = "Entdeckt" }}
-  {{ $close = "Schließen" }}
-  {{ $sceneLabel = "Interaktiver Arbeitsplatz: ein Schreibtisch mit Mikroskop, Kanban-Monitor und Rucksack" }}
-  {{ $completeTitle = "Mission erfüllt" }}
-  {{ $completeText = "Du hast alle drei Stationen erkundet. Danke für deinen Besuch in meinem Arbeitsplatz!" }}
-  {{ $completeBtn = "Zurück zum klassischen Lebenslauf" }}
+  {{ $hudTitle   = "Point & Click Lebenslauf" }}
+  {{ $hint       = "Klicke die leuchtenden Objekte an und erkunde meinen Weg" }}
+  {{ $close      = "Schließen" }}
+  {{ $dialogAria = "Abenteuer-Dialog" }}
+  {{ $questBadge = "AUFTRAG" }}
+  {{ $noscript   = "Dieses Abenteuer benötigt JavaScript." }}
 
-  {{ $s1Aria = "Station Forschung: Mikroskop und Reagenzgläser" }}
-  {{ $s1Title = "Von Daten zu Struktur – Molekularbiologische Forschung" }}
-  {{ $s1Text = "Am Mikroskop werden aus rohen Messdaten dreidimensionale Strukturen. Pipette, Reagenzgläser und Sequenzierung waren meine ständigen Begleiter, während ich untersuchte, wie Proteine das Leben formen." }}
+  {{ $l1Title = "Level 1 · Das Labor · Molekularbiologie" }}
+  {{ $l1aL    = "Mikroskop" }}
+  {{ $l1aT    = "Untersuchung von Zellen. Alles noch sehr analog." }}
+  {{ $l1bL    = "Petrischale" }}
+  {{ $l1bT    = "Kultivierung von Proben. Faszinierend, aber langsam." }}
+  {{ $l1cL    = "Sequenzierungsdaten" }}
+  {{ $l1cT    = "Quest: Rette die Netzhaut-Neuronen! Die Sequenzierungsdaten sind riesig. Händisch ist das nicht mehr zu bewältigen. Du brauchst Automatisierung und IT!" }}
+  {{ $l1Btn   = "Wechsel in die IT" }}
 
-  {{ $s2Aria = "Station IT: Monitor mit Kanban-Board" }}
-  {{ $s2Title = "Mission Control – Agile & Atlassian Koordination" }}
-  {{ $s2Text = "Auf meinem Monitor halten Epics, Sprints und Tickets jedes Team auf Kurs. Ich koordiniere Abläufe mit Jira und Confluence, damit alle wissen, was als Nächstes zählt." }}
+  {{ $l2Title = "Level 2 · Das Tal des Chaos · Agile Transition" }}
+  {{ $l2aL    = "Verwirrter Kollege" }}
+  {{ $l2aT    = "Niemand weiß, wer gerade woran arbeitet." }}
+  {{ $l2bL    = "Fliegende Zettel" }}
+  {{ $l2bT    = "Anforderungen gehen im E-Mail-Postfach verloren." }}
+  {{ $l2cL    = "Whiteboard" }}
+  {{ $l2cT    = "Quest: Bringe Ordnung in das System! Du sammelst Anforderungen (Requirements Engineering), führst Jira ein und wandelst das Chaos in strukturierte Sprints um." }}
+  {{ $l2Btn   = "Betrete Kommando-Stand" }}
 
-  {{ $s3Aria = "Station Natur: Rucksack, Karte und Baum" }}
-  {{ $s3Title = "Feldarbeit – Umweltbildung & Ehrenamt" }}
-  {{ $s3Text = "Verlasse ich das Labor, tausche ich die Pipette gegen den Kompass. Am Falkenhof teile ich meine Begeisterung für die Natur und zeige jungen Menschen, wie man verantwortungsvoll mit ihr umgeht." }}
+  {{ $l3Title = "Level 3 · Kommando-Stand · IT-Koordination" }}
+  {{ $l3aL    = "Server-Racks" }}
+  {{ $l3aT    = "Die Infrastruktur läuft stabil." }}
+  {{ $l3bL    = "Team-Dashboard" }}
+  {{ $l3bT    = "Transparenz über alle Projekte hinweg." }}
+  {{ $l3cL    = "Hauptterminal" }}
+  {{ $l3cT    = "Quest: Das finale Projekt. Du hast die Prozesse optimiert und das Atlassian-Netzwerk freigeschaltet. Mission erfolgreich!" }}
+  {{ $l3Btn   = "Zum klassischen Lebenslauf" }}
 {{ end }}
 
+{{/* ------------------------------------------------------------------ */}}
+{{/* Build the game data (serialized into JS via jsonify)               */}}
+{{/* ------------------------------------------------------------------ */}}
+{{ $levels := slice }}
+{{ $levels = $levels | append (dict
+  "title" $l1Title
+  "hotspots" (slice
+    (dict "icon" "fa-microscope"        "label" $l1aL "text" $l1aT "type" "flavor" "x" 25 "y" 38)
+    (dict "icon" "fa-flask"             "label" $l1bL "text" $l1bT "type" "flavor" "x" 62 "y" 42)
+    (dict "icon" "fa-database"          "label" $l1cL "text" $l1cT "type" "quest"  "x" 80 "y" 30 "btn" $l1Btn)
+  )
+) }}
+{{ $levels = $levels | append (dict
+  "title" $l2Title
+  "hotspots" (slice
+    (dict "icon" "fa-circle-question"   "label" $l2aL "text" $l2aT "type" "flavor" "x" 22 "y" 45)
+    (dict "icon" "fa-sticky-note"       "label" $l2bL "text" $l2bT "type" "flavor" "x" 62 "y" 30)
+    (dict "icon" "fa-chalkboard"        "label" $l2cL "text" $l2cT "type" "quest"  "x" 78 "y" 40 "btn" $l2Btn)
+  )
+) }}
+{{ $levels = $levels | append (dict
+  "title" $l3Title
+  "hotspots" (slice
+    (dict "icon" "fa-server"            "label" $l3aL "text" $l3aT "type" "flavor" "x" 24 "y" 46)
+    (dict "icon" "fa-chart-line"        "label" $l3bL "text" $l3bT "type" "flavor" "x" 58 "y" 30)
+    (dict "icon" "fa-terminal"          "label" $l3cL "text" $l3cT "type" "quest"  "x" 80 "y" 42 "btn" $l3Btn)
+  )
+) }}
+
+{{ $data := dict
+  "hudTitle"  $hudTitle
+  "hint"      $hint
+  "close"     $close
+  "dialogAria" $dialogAria
+  "questBadge" $questBadge
+  "noscript"  $noscript
+  "home"      $home
+  "levels"    $levels
+}}
+
 <div id="adventure-root">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+
   <style>
-    #adventure-root { position: relative; margin: 1.5rem 0; border-radius: 1rem; overflow: hidden; box-shadow: 0 20px 40px -12px rgb(2 6 23 / .4); }
+    #adventure-root {
+      position: relative;
+      width: min(100%, 800px);
+      margin: 1.5rem auto;
+      aspect-ratio: 16 / 9;
+      border-radius: 1rem;
+      overflow: hidden;
+      background: #0f172a;
+      box-shadow: 0 20px 50px -12px rgb(2 6 23 / .5);
+    }
     #adventure-root *, #adventure-root *::before, #adventure-root *::after { box-sizing: border-box; }
     #adventure-root [hidden] { display: none !important; }
+    #adventure-root button { font-family: inherit; }
 
-    .adventure-scene { display: block; width: 100%; aspect-ratio: 16 / 9; background: #182338; }
-    .adventure-scene svg { display: block; width: 100%; height: 100%; }
-
-    /* Hotspots */
-    .adventure-hotspot { cursor: pointer; outline: none; }
-    .adventure-hotspot .adv-object { transition: filter .25s ease; }
-    .adventure-hotspot .adv-halo-ring { transition: stroke-width .25s ease, opacity .25s ease; }
-    .adventure-hotspot:hover .adv-object,
-    .adventure-hotspot:focus-visible .adv-object { filter: brightness(1.2) drop-shadow(0 0 12px rgb(99 102 241 / .6)); }
-    .adventure-hotspot:hover .adv-halo-ring,
-    .adventure-hotspot:focus-visible .adv-halo-ring { stroke-width: 3.5; }
-    .adventure-hotspot .adv-pulse { animation: advPulse 2.4s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
-    @keyframes advPulse {
-      0%, 100% { opacity: .85; transform: scale(1); }
-      50% { opacity: .25; transform: scale(1.12); }
+    /* ---------------------------------------------------------------- */
+    /* Levels — absolutely positioned so they can crossfade             */
+    /* ---------------------------------------------------------------- */
+    .adv-level {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity .55s ease;
+      overflow: hidden;
     }
-    .adv-number { transition: opacity .25s ease; }
-    .adv-check { opacity: 0; transition: opacity .25s ease; }
-    .adventure-hotspot.is-visited .adv-pulse,
-    .adventure-hotspot.is-visited .adv-number { opacity: 0; animation: none; }
-    .adventure-hotspot.is-visited .adv-check { opacity: 1; }
+    .adv-level.is-active { opacity: 1; visibility: visible; pointer-events: auto; }
 
-    /* Hint chip */
-    .adventure-hint { position: absolute; left: .75rem; bottom: .75rem; z-index: 5; display: inline-flex; align-items: center; gap: .4rem; padding: .35rem .7rem; border-radius: 9999px; background: rgb(2 6 23 / .55); color: #e2e8f0; font-size: .75rem; font-weight: 500; letter-spacing: .02em; backdrop-filter: blur(4px); }
-    .dark #adventure-root .adventure-hint { background: rgb(15 23 42 / .6); }
+    /* Level themes */
+    .adv-level--lab {
+      background: linear-gradient(180deg, #eef6ff 0%, #dbeafe 45%, #bfdbfe 62%, #cbd5e1 100%);
+    }
+    .adv-level--lab::before {
+      content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 16%;
+      background: linear-gradient(180deg, #94a3b8, #64748b);
+      border-top: 3px solid #cbd5e1;
+    }
+    .adv-level--chaos {
+      background: linear-gradient(160deg, #fefce8 0%, #fde68a 45%, #f59e0b 78%, #78716c 100%);
+    }
+    .adv-level--chaos::before {
+      content: ""; position: absolute; inset: auto 0 0 0; height: 12%;
+      background: linear-gradient(180deg, #57534e, #44403c); opacity: .55;
+    }
+    .adv-level--neon {
+      background: radial-gradient(120% 120% at 20% 0%, #312e81 0%, #1e1b4b 35%, #020617 82%);
+    }
+    .adv-level--neon::after {
+      content: ""; position: absolute; inset: 0; opacity: .32;
+      background-image:
+        linear-gradient(rgb(129 140 248 / .35) 1px, transparent 1px),
+        linear-gradient(90deg, rgb(129 140 248 / .35) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+    .adv-level--neon::before {
+      content: ""; position: absolute; inset: auto 0 0 0; height: 12%;
+      background: linear-gradient(180deg, transparent, #312e81);
+    }
 
-    /* Progress tracker */
-    .adventure-progress { position: absolute; top: .75rem; right: .75rem; z-index: 5; display: flex; align-items: center; gap: .6rem; padding: .4rem .8rem; border-radius: 9999px; background: rgb(255 255 255 / .94); color: #0f172a; font-size: .8rem; font-weight: 700; box-shadow: 0 6px 16px rgb(0 0 0 / .18); }
-    .dark #adventure-root .adventure-progress { background: rgb(15 23 42 / .9); color: #e2e8f0; }
-    .adventure-progress-label { white-space: nowrap; }
-    .adventure-progress-track { width: 3.25rem; height: .42rem; border-radius: 9999px; background: #cbd5e1; overflow: hidden; }
-    .dark #adventure-root .adventure-progress-track { background: #334155; }
-    .adventure-progress-fill { display: block; height: 100%; width: 0%; border-radius: 9999px; background: linear-gradient(90deg, #6366f1, #8b5cf6); transition: width .45s ease; }
+    /* Decorative background icons */
+    .adv-deco {
+      position: absolute;
+      z-index: 1;
+      opacity: .4;
+      font-size: clamp(1.8rem, 6vw, 3.4rem);
+      pointer-events: none;
+    }
 
-    /* Mission complete banner */
-    .adventure-complete { position: absolute; top: 4.4rem; left: 50%; transform: translateX(-50%); z-index: 6; width: min(92%, 34rem); }
-    .adventure-complete-card { display: flex; align-items: center; gap: .8rem; padding: .7rem 1rem; border-radius: .9rem; background: linear-gradient(90deg, #059669, #10b981); color: #fff; box-shadow: 0 12px 28px rgb(16 185 129 / .45); animation: advDrop .5s cubic-bezier(.2,.9,.3,1.2); }
-    .adventure-complete-card .adv-icon { width: 1.6rem; height: 1.6rem; flex: none; }
-    .adventure-complete-copy { display: flex; flex-direction: column; gap: .1rem; min-width: 0; }
-    .adventure-complete-copy strong { font-size: .95rem; line-height: 1.2; }
-    .adventure-complete-copy p { margin: 0; font-size: .78rem; opacity: .95; line-height: 1.4; }
-    .adventure-complete-btn { flex: none; display: inline-flex; align-items: center; padding: .45rem .8rem; border-radius: 9999px; background: #fff; color: #047857; font-size: .78rem; font-weight: 700; text-decoration: none; box-shadow: 0 4px 10px rgb(0 0 0 / .15); }
-    .adventure-complete-btn:hover { filter: brightness(.96); }
-    @keyframes advDrop { from { transform: translateY(-14px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    /* ---------------------------------------------------------------- */
+    /* Hotspots                                                         */
+    /* ---------------------------------------------------------------- */
+    .adv-spot {
+      position: absolute;
+      z-index: 3;
+      transform: translate(-50%, -50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .3rem;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: #0f172a;
+      cursor: pointer;
+      font-size: clamp(1.3rem, 4vw, 2.1rem);
+    }
+    .adv-spot .adv-icondisc {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.6em;
+      height: 2.6em;
+      border-radius: 50%;
+      background: rgb(255 255 255 / .55);
+      color: inherit;
+      box-shadow: 0 6px 16px rgb(0 0 0 / .18);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .adv-spot .adv-icondisc::before {
+      content: "";
+      position: absolute;
+      inset: -6px;
+      border-radius: 50%;
+      border: 2px solid rgb(15 23 42 / .35);
+      opacity: .55;
+      animation: advPing 2.4s ease-out infinite;
+    }
+    .adv-spot i { font-size: 1.2em; text-shadow: 0 4px 10px rgb(0 0 0 / .2); }
+    .adv-spot small {
+      font-size: .55em;
+      font-weight: 700;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      padding: .25em .6em;
+      border-radius: 999px;
+      background: rgb(15 23 42 / .55);
+      color: #fff;
+      backdrop-filter: blur(2px);
+    }
+    .adv-spot:hover .adv-icondisc,
+    .adv-spot:focus-visible .adv-icondisc { transform: scale(1.15); }
+    .adv-spot:focus-visible { outline: 3px solid rgb(99 102 241 / .8); outline-offset: 4px; border-radius: .5rem; }
 
-    /* Modal */
-    .adventure-modal { position: absolute; inset: 0; z-index: 10; display: flex; align-items: center; justify-content: center; padding: 1rem; }
-    .adventure-modal-backdrop { position: absolute; inset: 0; background: rgb(2 6 23 / .62); backdrop-filter: blur(3px); }
-    .adventure-modal-card { position: relative; width: min(100%, 30rem); max-height: 92%; overflow: auto; border-radius: 1rem; padding: 1.6rem; background: #fff; color: #0f172a; box-shadow: 0 25px 50px -12px rgb(0 0 0 / .55); animation: advPop .28s cubic-bezier(.2,.9,.3,1.15); }
-    .dark #adventure-root .adventure-modal-card { background: #1e293b; color: #e2e8f0; }
-    .adventure-modal-close { position: absolute; top: .6rem; right: .6rem; display: inline-flex; align-items: center; justify-content: center; width: 2rem; height: 2rem; border: none; border-radius: 9999px; background: #f1f5f9; color: #475569; cursor: pointer; font-size: 1rem; line-height: 1; }
-    .dark #adventure-root .adventure-modal-close { background: #334155; color: #cbd5e1; }
-    .adventure-modal-close:hover { background: #e2e8f0; }
-    .dark #adventure-root .adventure-modal-close:hover { background: #475569; }
-    .adventure-panel-icon { display: inline-flex; align-items: center; justify-content: center; width: 3.5rem; height: 3.5rem; margin-bottom: .9rem; border-radius: 1rem; background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; }
-    .adventure-panel-icon .adv-icon { width: 1.9rem; height: 1.9rem; }
-    .adventure-modal-card h3 { margin: 0 0 .55rem; font-size: 1.25rem; line-height: 1.3; }
-    .adventure-modal-card p { margin: 0; font-size: .95rem; line-height: 1.65; }
-    @keyframes advPop { from { transform: scale(.94) translateY(8px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
+    .adv-spot.is-quest { color: #92400e; }
+    .adv-spot.is-quest .adv-icondisc { background: rgb(251 191 36 / .55); box-shadow: 0 0 0 3px rgb(251 191 36 / .45), 0 8px 20px rgb(0 0 0 / .25); }
+    .adv-spot.is-quest .adv-icondisc::before { border-color: #fbbf24; }
+
+    .adv-badge {
+      position: absolute;
+      top: -.55em;
+      right: -.55em;
+      font-size: .42em;
+      font-weight: 800;
+      letter-spacing: .08em;
+      padding: .3em .6em;
+      border-radius: 999px;
+      background: #d97706;
+      color: #fff;
+      box-shadow: 0 2px 8px rgb(0 0 0 / .35);
+      animation: advFloat 2.6s ease-in-out infinite;
+    }
+    .adv-spot.is-solved { color: #14532d; }
+    .adv-spot.is-solved .adv-icondisc { background: rgb(74 222 128 / .6); box-shadow: 0 0 0 3px rgb(34 197 94 / .6); }
+    .adv-spot.is-solved .adv-icondisc::before { animation: none; opacity: 0; }
+    .adv-badge--ok { background: #22c55e; color: #052e16; animation: none; }
+
+    @keyframes advPing {
+      0%   { transform: scale(.82); opacity: .7; }
+      70%  { transform: scale(1.4); opacity: 0; }
+      100% { transform: scale(1.4); opacity: 0; }
+    }
+    @keyframes advFloat {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-3px); }
+    }
+
+    /* ---------------------------------------------------------------- */
+    /* HUD (top bar)                                                    */
+    /* ---------------------------------------------------------------- */
+    .adv-hud {
+      position: absolute;
+      top: .7rem;
+      left: .7rem;
+      right: .7rem;
+      z-index: 15;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: .5rem;
+      pointer-events: none;
+    }
+    .adv-hud-title {
+      font-size: clamp(.6rem, 2vw, .85rem);
+      font-weight: 700;
+      letter-spacing: .03em;
+      padding: .35rem .7rem;
+      border-radius: 999px;
+      background: rgb(15 23 42 / .55);
+      color: #fff;
+      backdrop-filter: blur(3px);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .adv-hud-dots { display: flex; gap: .35rem; }
+    .adv-dot {
+      width: .7rem;
+      height: .7rem;
+      border-radius: 50%;
+      background: rgb(255 255 255 / .35);
+      box-shadow: 0 1px 4px rgb(0 0 0 / .3);
+      transition: background .3s ease;
+    }
+    .adv-dot.is-current { background: #fbbf24; box-shadow: 0 0 10px rgb(251 191 36 / .85); }
+    .adv-dot.is-done { background: #22c55e; box-shadow: 0 0 8px rgb(34 197 94 / .8); }
+
+    .adv-hint {
+      position: absolute;
+      left: .7rem;
+      bottom: .7rem;
+      z-index: 15;
+      font-size: clamp(.55rem, 1.8vw, .75rem);
+      font-weight: 500;
+      padding: .3rem .6rem;
+      border-radius: 999px;
+      background: rgb(15 23 42 / .5);
+      color: #e2e8f0;
+      backdrop-filter: blur(3px);
+      pointer-events: none;
+    }
+
+    /* ---------------------------------------------------------------- */
+    /* Dialog box (RPG style, bottom of the scene)                      */
+    /* ---------------------------------------------------------------- */
+    .adv-dialog {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 20;
+      padding: .9rem;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(100%);
+      transition: transform .32s cubic-bezier(.2, .9, .3, 1.1), opacity .32s ease;
+    }
+    .adv-dialog.is-open { opacity: 1; visibility: visible; transform: translateY(0); }
+    .adv-dialog-box {
+      position: relative;
+      padding: .85rem 2.6rem .9rem .95rem;
+      border-radius: .9rem;
+      background: rgb(2 6 23 / .9);
+      color: #f1f5f9;
+      border: 1px solid rgb(255 255 255 / .14);
+      box-shadow: 0 -10px 30px rgb(0 0 0 / .35);
+      backdrop-filter: blur(6px);
+    }
+    .adv-dialog-char {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      font-size: clamp(.65rem, 2vw, .85rem);
+      font-weight: 800;
+      letter-spacing: .03em;
+      color: #93c5fd;
+      text-transform: uppercase;
+      margin-bottom: .35rem;
+    }
+    .adv-dialog-char i { width: 1.2em; text-align: center; }
+    .adv-dialog-text {
+      margin: 0;
+      font-size: clamp(.8rem, 2.6vw, 1rem);
+      line-height: 1.6;
+      min-height: 1.6em;
+      color: #f8fafc;
+    }
+    .adv-caret {
+      display: inline-block;
+      width: .55em;
+      height: 1.05em;
+      margin-left: .1em;
+      vertical-align: text-bottom;
+      background: currentColor;
+      animation: advBlink .8s steps(1) infinite;
+    }
+    @keyframes advBlink { 50% { opacity: 0; } }
+    .adv-dialog-close {
+      position: absolute;
+      top: .45rem;
+      right: .45rem;
+      width: 1.7rem;
+      height: 1.7rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 0;
+      border-radius: 999px;
+      background: rgb(255 255 255 / .12);
+      color: #cbd5e1;
+      cursor: pointer;
+      font-size: .8rem;
+      line-height: 1;
+    }
+    .adv-dialog-close:hover { background: rgb(255 255 255 / .25); }
+    .adv-dialog-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      margin-top: .7rem;
+      padding: .5rem 1.1rem;
+      border: 0;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #6366f1, #8b5cf6);
+      color: #fff;
+      font-size: clamp(.72rem, 2.2vw, .9rem);
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 6px 16px rgb(99 102 241 / .45);
+      transition: filter .2s ease, transform .15s ease;
+    }
+    .adv-dialog-btn:hover { filter: brightness(1.08); }
+    .adv-dialog-btn:active { transform: translateY(1px); }
+
+    #adventure-root .adv-noscript {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      text-align: center;
+      color: #94a3b8;
+      font-size: .9rem;
+    }
 
     @media (max-width: 560px) {
-      .adventure-complete { top: auto; bottom: .75rem; width: calc(100% - 1.5rem); }
-      .adventure-complete-card { flex-wrap: wrap; }
-      .adventure-complete-btn { width: 100%; justify-content: center; }
+      .adv-dialog { padding: .6rem; }
+      .adv-dialog-box { padding: .7rem 2.2rem .75rem .75rem; }
+      .adv-hint { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #adventure-root *, #adventure-root *::before, #adventure-root *::after {
+        animation: none !important;
+        transition: none !important;
+      }
     }
   </style>
 
-  <div class="adventure-scene" aria-label="{{ $sceneLabel }}">
-    <svg viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="advWall" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#26334d"/><stop offset="1" stop-color="#182338"/>
-        </linearGradient>
-        <linearGradient id="advFloor" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#5b4126"/><stop offset="1" stop-color="#3e2b18"/>
-        </linearGradient>
-        <linearGradient id="advSky" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#38bdf8"/><stop offset="1" stop-color="#e0f2fe"/>
-        </linearGradient>
-        <radialGradient id="advLamp" cx="0.5" cy="0.5" r="0.5">
-          <stop offset="0" stop-color="#fde68a" stop-opacity="0.28"/>
-          <stop offset="1" stop-color="#fde68a" stop-opacity="0"/>
-        </radialGradient>
-      </defs>
-
-      <!-- Wall & floor -->
-      <rect x="0" y="0" width="960" height="400" fill="url(#advWall)"/>
-      <rect x="0" y="400" width="960" height="140" fill="url(#advFloor)"/>
-      <rect x="0" y="400" width="960" height="6" fill="#4a3520"/>
-
-      <!-- Window -->
-      <g>
-        <rect x="60" y="70" width="210" height="230" rx="14" fill="#0f172a"/>
-        <rect x="72" y="82" width="186" height="206" rx="8" fill="url(#advSky)"/>
-        <circle cx="222" cy="122" r="16" fill="#fde047"/>
-        <g fill="#ffffff" opacity="0.9">
-          <ellipse cx="120" cy="130" rx="22" ry="9"/>
-          <ellipse cx="142" cy="125" rx="13" ry="8"/>
-          <ellipse cx="182" cy="162" rx="18" ry="7"/>
-        </g>
-        <path d="M72 272 Q120 240 172 268 T258 262 L258 288 L72 288 Z" fill="#4ade80" opacity="0.55"/>
-        <path d="M72 288 Q132 258 258 284 L258 288 L72 288 Z" fill="#22c55e" opacity="0.5"/>
-        <rect x="159" y="82" width="6" height="206" fill="#0f172a"/>
-        <rect x="72" y="185" width="186" height="6" fill="#0f172a"/>
-        <rect x="56" y="300" width="218" height="10" rx="5" fill="#334155"/>
-      </g>
-
-      <!-- Framed picture -->
-      <g>
-        <rect x="838" y="104" width="62" height="82" rx="6" fill="#0f172a"/>
-        <rect x="846" y="112" width="46" height="66" rx="3" fill="#fef3c7"/>
-        <circle cx="862" cy="132" r="7" fill="#fb7185"/>
-        <path d="M846 178 l14 -20 10 12 8 -9 14 17 Z" fill="#34d399"/>
-      </g>
-
-      <!-- Wall sticky notes -->
-      <g>
-        <rect x="348" y="296" width="34" height="34" rx="4" fill="#fde68a" transform="rotate(-6 365 313)"/>
-        <rect x="368" y="278" width="34" height="34" rx="4" fill="#fda4af" transform="rotate(8 385 295)"/>
-        <rect x="360" y="326" width="34" height="34" rx="4" fill="#a5f3fc" transform="rotate(-3 377 343)"/>
-      </g>
-
-      <!-- Mood light behind monitor -->
-      <ellipse cx="504" cy="330" rx="170" ry="95" fill="url(#advLamp)"/>
-
-      <!-- Desk -->
-      <g>
-        <ellipse cx="480" cy="522" rx="430" ry="16" fill="#000000" opacity="0.25"/>
-        <rect x="84" y="414" width="24" height="118" rx="6" fill="#4a2f1b"/>
-        <rect x="852" y="414" width="24" height="118" rx="6" fill="#4a2f1b"/>
-        <rect x="30" y="398" width="900" height="18" rx="6" fill="#6b4626"/>
-        <rect x="24" y="382" width="912" height="20" rx="9" fill="#8a5a33"/>
-        <rect x="24" y="382" width="912" height="8" rx="4" fill="#a06a3e"/>
-      </g>
-
-      <!-- Coffee mug -->
-      <g opacity="0.95">
-        <rect x="352" y="348" width="30" height="34" rx="6" fill="#e2e8f0"/>
-        <rect x="352" y="354" width="30" height="10" rx="5" fill="#7c4a1e"/>
-        <path d="M382 356 h10 a8 8 0 0 1 0 16 h-10 Z" fill="#e2e8f0"/>
-        <path d="M352 358 h30" stroke="#f59e0b" stroke-width="3"/>
-      </g>
-
-      <!-- Pot plant -->
-      <g>
-        <path d="M862 380 l18 14 18 -14 Z" fill="#b45309"/>
-        <rect x="876" y="368" width="8" height="14" fill="#b45309"/>
-        <ellipse cx="880" cy="368" rx="14" ry="6" fill="#7c4a1e"/>
-        <path d="M880 368 c-8 -18 2 -30 10 -34 c-6 14 -2 24 4 30 Z" fill="#22c55e"/>
-        <path d="M880 368 c8 -16 -4 -28 -12 -32 c6 12 2 22 -4 28 Z" fill="#16a34a"/>
-      </g>
-
-      <!-- ===== HOTSPOT 1: Research (microscope + test tubes) ===== -->
-      <g class="adventure-hotspot" data-station="1" role="button" tabindex="0" aria-label="{{ $s1Aria }}">
-        <g class="adv-halo">
-          <ellipse class="adv-pulse" cx="248" cy="328" rx="100" ry="94" fill="none" stroke="#818cf8" stroke-width="3" stroke-dasharray="8 10" stroke-linecap="round"/>
-          <ellipse class="adv-halo-ring" cx="248" cy="328" rx="100" ry="94" fill="none" stroke="#6366f1" stroke-width="2" stroke-dasharray="8 10" stroke-linecap="round" opacity="0.7"/>
-          <circle class="adv-number" cx="248" cy="234" r="16" fill="#6366f1"/>
-          <text class="adv-number" x="248" y="240" text-anchor="middle" font-size="16" font-weight="700" fill="#ffffff">1</text>
-          <g class="adv-check">
-            <circle cx="248" cy="234" r="16" fill="#10b981" stroke="#ffffff" stroke-width="2"/>
-            <path d="M241 234 l5 5 l9 -10" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-          </g>
-        </g>
-        <g class="adv-object">
-          <!-- flask -->
-          <rect x="250" y="338" width="18" height="4" rx="2" fill="#e2e8f0"/>
-          <rect x="252" y="342" width="14" height="20" fill="#38bdf8" opacity="0.75"/>
-          <path d="M249 362 l22 0 c0 -20 -22 -20 -22 0 Z" fill="#38bdf8" opacity="0.75"/>
-          <path d="M253 362 c1 -8 5 -12 8 -12 c3 0 7 4 8 12 Z" fill="#f472b6" opacity="0.85"/>
-          <circle cx="262" cy="336" r="2" fill="#ffffff" opacity="0.6"/>
-          <circle cx="258" cy="332" r="1.4" fill="#ffffff" opacity="0.6"/>
-          <!-- test tube rack -->
-          <rect x="276" y="358" width="58" height="5" rx="2.5" fill="#d97706"/>
-          <rect x="276" y="362" width="58" height="18" rx="5" fill="#b45309"/>
-          <circle cx="292" cy="371" r="4" fill="#8a5a33"/>
-          <circle cx="306" cy="371" r="4" fill="#8a5a33"/>
-          <circle cx="320" cy="371" r="4" fill="#8a5a33"/>
-          <g>
-            <rect x="286" y="334" width="13" height="5" rx="2" fill="#475569"/>
-            <rect x="287" y="339" width="11" height="23" rx="5.5" fill="#f472b6"/>
-            <rect x="287" y="350" width="11" height="12" fill="#ec4899" opacity="0.7"/>
-          </g>
-          <g>
-            <rect x="300" y="334" width="13" height="5" rx="2" fill="#475569"/>
-            <rect x="301" y="339" width="11" height="23" rx="5.5" fill="#22d3ee"/>
-            <rect x="301" y="352" width="11" height="10" fill="#0891b2" opacity="0.7"/>
-          </g>
-          <g>
-            <rect x="314" y="334" width="13" height="5" rx="2" fill="#475569"/>
-            <rect x="315" y="339" width="11" height="23" rx="5.5" fill="#a3e635"/>
-            <rect x="315" y="350" width="11" height="12" fill="#65a30d" opacity="0.7"/>
-          </g>
-          <!-- microscope -->
-          <rect x="168" y="352" width="88" height="28" rx="8" fill="#475569"/>
-          <rect x="168" y="352" width="88" height="10" rx="5" fill="#5b6b83"/>
-          <rect x="206" y="296" width="20" height="56" fill="#64748b"/>
-          <rect x="178" y="318" width="48" height="9" rx="4" fill="#64748b"/>
-          <rect x="176" y="310" width="52" height="9" rx="4" fill="#94a3b8"/>
-          <rect x="186" y="306" width="20" height="6" rx="2" fill="#e2e8f0"/>
-          <circle cx="197" cy="309" r="1.6" fill="#f472b6"/>
-          <rect x="224" y="322" width="10" height="14" rx="3" fill="#94a3b8"/>
-          <rect x="196" y="288" width="58" height="14" rx="7" fill="#64748b"/>
-          <rect x="202" y="258" width="44" height="15" rx="7" fill="#94a3b8" transform="rotate(-35 224 266)"/>
-          <rect x="194" y="254" width="13" height="12" rx="4" fill="#cbd5e1"/>
-          <circle cx="226" cy="342" r="7" fill="#475569"/>
-        </g>
-      </g>
-
-      <!-- ===== HOTSPOT 2: IT (monitor + kanban) ===== -->
-      <g class="adventure-hotspot" data-station="2" role="button" tabindex="0" aria-label="{{ $s2Aria }}">
-        <g class="adv-halo">
-          <rect class="adv-pulse" x="392" y="232" width="224" height="146" rx="18" fill="none" stroke="#22d3ee" stroke-width="3" stroke-dasharray="8 10"/>
-          <rect class="adv-halo-ring" x="392" y="232" width="224" height="146" rx="18" fill="none" stroke="#06b6d4" stroke-width="2" stroke-dasharray="8 10" opacity="0.7"/>
-          <circle class="adv-number" cx="504" cy="232" r="16" fill="#0891b2"/>
-          <text class="adv-number" x="504" y="238" text-anchor="middle" font-size="16" font-weight="700" fill="#ffffff">2</text>
-          <g class="adv-check">
-            <circle cx="504" cy="232" r="16" fill="#10b981" stroke="#ffffff" stroke-width="2"/>
-            <path d="M497 232 l5 5 l9 -10" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-          </g>
-        </g>
-        <g class="adv-object">
-          <rect x="472" y="368" width="64" height="14" rx="5" fill="#334155"/>
-          <rect x="498" y="338" width="12" height="32" fill="#475569"/>
-          <rect x="404" y="244" width="200" height="118" rx="12" fill="#0f172a"/>
-          <rect x="412" y="252" width="184" height="102" rx="6" fill="#0b1220"/>
-          <!-- kanban columns -->
-          <rect x="422" y="262" width="54" height="82" rx="5" fill="#1e293b"/>
-          <rect x="430" y="269" width="38" height="8" rx="4" fill="#64748b"/>
-          <rect x="428" y="286" width="42" height="7" rx="3.5" fill="#475569"/>
-          <rect x="428" y="298" width="42" height="7" rx="3.5" fill="#475569"/>
-          <rect x="428" y="310" width="42" height="7" rx="3.5" fill="#475569"/>
-          <rect x="483" y="262" width="54" height="82" rx="5" fill="#1e293b"/>
-          <rect x="491" y="269" width="38" height="8" rx="4" fill="#f59e0b"/>
-          <rect x="489" y="286" width="42" height="7" rx="3.5" fill="#fbbf24"/>
-          <rect x="489" y="298" width="42" height="7" rx="3.5" fill="#f59e0b"/>
-          <rect x="544" y="262" width="54" height="82" rx="5" fill="#1e293b"/>
-          <rect x="552" y="269" width="38" height="8" rx="4" fill="#22c55e"/>
-          <rect x="550" y="286" width="42" height="7" rx="3.5" fill="#16a34a"/>
-          <rect x="550" y="298" width="42" height="7" rx="3.5" fill="#22c55e"/>
-          <rect x="550" y="310" width="42" height="7" rx="3.5" fill="#a3e635"/>
-          <!-- glare -->
-          <path d="M420 255 l40 -3 -34 96 h-14 z" fill="#ffffff" opacity="0.08"/>
-        </g>
-      </g>
-
-      <!-- ===== HOTSPOT 3: Nature (backpack + map) ===== -->
-      <g class="adventure-hotspot" data-station="3" role="button" tabindex="0" aria-label="{{ $s3Aria }}">
-        <g class="adv-halo">
-          <ellipse class="adv-pulse" cx="745" cy="328" rx="95" ry="92" fill="none" stroke="#34d399" stroke-width="3" stroke-dasharray="8 10" stroke-linecap="round"/>
-          <ellipse class="adv-halo-ring" cx="745" cy="328" rx="95" ry="92" fill="none" stroke="#10b981" stroke-width="2" stroke-dasharray="8 10" stroke-linecap="round" opacity="0.7"/>
-          <circle class="adv-number" cx="745" cy="236" r="16" fill="#059669"/>
-          <text class="adv-number" x="745" y="242" text-anchor="middle" font-size="16" font-weight="700" fill="#ffffff">3</text>
-          <g class="adv-check">
-            <circle cx="745" cy="236" r="16" fill="#10b981" stroke="#ffffff" stroke-width="2"/>
-            <path d="M738 236 l5 5 l9 -10" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-          </g>
-        </g>
-        <g class="adv-object">
-          <!-- rolled map -->
-          <rect x="790" y="348" width="52" height="22" rx="11" fill="#fbbf24"/>
-          <rect x="790" y="348" width="52" height="7" rx="3.5" fill="#f59e0b"/>
-          <path d="M802 352 v14 M814 352 v14 M826 352 v14" stroke="#92400e" stroke-width="1.5" opacity="0.5"/>
-          <circle cx="794" cy="359" r="11" fill="#d97706"/>
-          <circle cx="794" cy="359" r="5" fill="#fbbf24"/>
-          <!-- backpack -->
-          <rect x="696" y="306" width="86" height="76" rx="18" fill="#22c55e"/>
-          <rect x="696" y="306" width="86" height="12" rx="6" fill="#4ade80"/>
-          <path d="M704 336 h70" stroke="#16a34a" stroke-width="3"/>
-          <path d="M704 352 h70" stroke="#15803d" stroke-width="2.5"/>
-          <circle cx="739" cy="352" r="4" fill="#0f172a"/>
-          <rect x="700" y="344" width="30" height="34" rx="8" fill="#16a34a"/>
-          <path d="M716 306 v34 M756 306 v34" stroke="#15803d" stroke-width="8" stroke-linecap="round"/>
-          <path d="M716 306 c0 -12 22 -12 22 0" fill="none" stroke="#15803d" stroke-width="6"/>
-          <!-- tree sticker -->
-          <g transform="translate(748 330)">
-            <rect x="-2" y="8" width="4" height="8" fill="#78350f"/>
-            <path d="M0 -14 L-14 2 Q-8 6 0 6 Q8 6 14 2 Z" fill="#065f46"/>
-            <path d="M0 -20 L-10 -6 Q-4 -2 0 -2 Q4 -2 10 -6 Z" fill="#059669"/>
-          </g>
-        </g>
-      </g>
-    </svg>
+  {{/* Level 1 — The Lab */}}
+  <div class="adv-level adv-level--lab is-active" data-level="1" aria-hidden="false">
+    <i class="adv-deco fas fa-dna" style="left:6%; top:14%; color:#2563eb" aria-hidden="true"></i>
+    <i class="adv-deco fas fa-vial" style="left:16%; top:56%; color:#7c3aed" aria-hidden="true"></i>
+    <i class="adv-deco fas fa-flask" style="left:72%; top:16%; color:#0891b2" aria-hidden="true"></i>
+    <i class="adv-deco fas fa-biohazard" style="left:90%; top:56%; color:#0ea5e9" aria-hidden="true"></i>
   </div>
 
-  <div class="adventure-hint">💡 {{ $hint }}</div>
-
-  <div class="adventure-progress">
-    <span class="adventure-progress-label">{{ $discovered }}: <span data-counter>0/3</span></span>
-    <span class="adventure-progress-track"><span class="adventure-progress-fill" data-progress-fill></span></span>
+  {{/* Level 2 — The Valley of Chaos */}}
+  <div class="adv-level adv-level--chaos" data-level="2" aria-hidden="true">
+    <i class="adv-deco fas fa-sticky-note" style="left:8%; top:12%; color:#b45309; transform:rotate(-12deg)" aria-hidden="true"></i>
+    <i class="adv-deco fas fa-sticky-note" style="left:35%; top:7%; color:#a16207; transform:rotate(8deg)" aria-hidden="true"></i>
+    <i class="adv-deco fas fa-envelope-open-text" style="left:12%; top:40%; color:#92400e" aria-hidden="true"></i>
+    <i class="adv-deco fas fa-paper-plane" style="left:88%; top:14%; color:#78350f; transform:rotate(18deg)" aria-hidden="true"></i>
+    <i class="adv-deco fas fa-sticky-note" style="left:52%; top:62%; color:#b45309; transform:rotate(-6deg)" aria-hidden="true"></i>
   </div>
 
-  <div class="adventure-complete" data-complete hidden>
-    <div class="adventure-complete-card">
-      <svg class="adv-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
-        <path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/>
-        <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/>
-        <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>
-      </svg>
-      <div class="adventure-complete-copy">
-        <strong>{{ $completeTitle }}</strong>
-        <p>{{ $completeText }}</p>
-      </div>
-      <a class="adventure-complete-btn" href="{{ $home }}">{{ $completeBtn }}</a>
-    </div>
+  {{/* Level 3 — Command Center */}}
+  <div class="adv-level adv-level--neon" data-level="3" aria-hidden="true">
+    <i class="adv-deco fas fa-server" style="left:8%; top:58%; color:#6366f1" aria-hidden="true"></i>
+    <i class="adv-deco fas fa-shield-halved" style="left:88%; top:12%; color:#22d3ee" aria-hidden="true"></i>
+    <i class="adv-deco fas fa-bolt" style="left:14%; top:12%; color:#facc15" aria-hidden="true"></i>
+    <i class="adv-deco fas fa-wifi" style="left:86%; top:60%; color:#a78bfa" aria-hidden="true"></i>
+    <i class="adv-deco fas fa-database" style="left:48%; top:9%; color:#818cf8" aria-hidden="true"></i>
   </div>
 
-  <div class="adventure-modal" data-modal hidden>
-    <div class="adventure-modal-backdrop" data-modal-close></div>
-    <div class="adventure-modal-card" data-modal-card role="dialog" aria-modal="true">
-      <button type="button" class="adventure-modal-close" data-modal-close aria-label="{{ $close }}">✕</button>
-      <div data-modal-body></div>
-    </div>
-  </div>
+  {{/* HUD */}}
+  <header class="adv-hud">
+    <span class="adv-hud-title" data-hud-title></span>
+    <span class="adv-hud-dots">
+      <span class="adv-dot is-current" data-dot></span>
+      <span class="adv-dot" data-dot></span>
+      <span class="adv-dot" data-dot></span>
+    </span>
+  </header>
+  <div class="adv-hint" data-hint></div>
 
-  <div hidden>
-    <div data-panel="1">
-      <div class="adventure-panel-icon">
-        <svg class="adv-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M6 18h8"/><path d="M3 22h18"/>
-          <path d="M14 22a7 7 0 1 0 0-14h-1"/>
-          <path d="M9 14h2"/>
-          <path d="M9 12a2 2 0 0 1-2-2V6h6v4a2 2 0 0 1-2 2Z"/>
-          <path d="M12 6V3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v3"/>
-        </svg>
-      </div>
-      <h3>{{ $s1Title }}</h3>
-      <p>{{ $s1Text }}</p>
+  {{/* RPG dialog box */}}
+  <section class="adv-dialog" data-dialog role="dialog" aria-modal="true" aria-label="{{ $dialogAria }}" aria-hidden="true">
+    <div class="adv-dialog-box">
+      <button type="button" class="adv-dialog-close" data-dialog-close aria-label="{{ $close }}">✕</button>
+      <div class="adv-dialog-char" data-dialog-char></div>
+      <p class="adv-dialog-text" data-dialog-text aria-live="polite"></p>
+      <button type="button" class="adv-dialog-btn" data-dialog-btn hidden></button>
     </div>
-    <div data-panel="2">
-      <div class="adventure-panel-icon">
-        <svg class="adv-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <rect x="2" y="3" width="20" height="14" rx="2"/>
-          <path d="M8 21h8"/><path d="M12 17v4"/>
-          <path d="M6 8v6M10 8v6M14 8v6M18 8v6" opacity="0.6"/>
-        </svg>
-      </div>
-      <h3>{{ $s2Title }}</h3>
-      <p>{{ $s2Text }}</p>
-    </div>
-    <div data-panel="3">
-      <div class="adventure-panel-icon">
-        <svg class="adv-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M4 10a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/>
-          <path d="M9 6V5a3 3 0 0 1 6 0v1"/>
-          <path d="M4 15h5"/><path d="M15 15h5"/><path d="M12 15v3"/>
-        </svg>
-      </div>
-      <h3>{{ $s3Title }}</h3>
-      <p>{{ $s3Text }}</p>
-    </div>
-  </div>
+  </section>
+
+  <noscript>
+    <div class="adv-noscript">{{ $noscript }}</div>
+  </noscript>
+
+  <script type="application/json" id="adv-data">{{ $data | jsonify | safeJS }}</script>
 
   <script>
     (function () {
       'use strict';
       var root = document.getElementById('adventure-root');
       if (!root) { return; }
-      var modal = root.querySelector('[data-modal]');
-      var modalCard = modal.querySelector('[data-modal-card]');
-      var modalBody = root.querySelector('[data-modal-body]');
-      var counter = root.querySelector('[data-counter]');
-      var progressFill = root.querySelector('[data-progress-fill]');
-      var complete = root.querySelector('[data-complete]');
-      var stations = Array.prototype.slice.call(root.querySelectorAll('[data-station]'));
-      var visited = {};
-      var KEY = 'adventure:visited:' + window.location.pathname;
+      var dataEl = document.getElementById('adv-data');
+      if (!dataEl) { return; }
+      var data;
+      try { data = JSON.parse(dataEl.textContent); } catch (e) { return; }
+      if (!data || !data.levels) { return; }
+      var $ = function (s) { return root.querySelector(s); };
+      var $$ = function (s) { return Array.prototype.slice.call(root.querySelectorAll(s)); };
 
-      try {
-        var saved = JSON.parse(window.localStorage.getItem(KEY));
-        if (saved && typeof saved === 'object' && !Array.isArray(saved)) { visited = saved; }
-      } catch (e) { /* ignore */ }
+      var levels = $$('[data-level]');
+      var dots = $$('[data-dot]');
+      var hudTitle = $('[data-hud-title]');
+      var hintEl = $('[data-hint]');
+      var dialog = $('[data-dialog]');
+      var dialogChar = $('[data-dialog-char]');
+      var dialogText = $('[data-dialog-text]');
+      var dialogBtn = $('[data-dialog-btn]');
+      var closeBtn = $('[data-dialog-close]');
 
-      function stationCount() {
-        return stations.filter(function (s) { return !!visited[s.getAttribute('data-station')]; }).length;
-      }
+      var current = 0;
+      var solved = {};
+      var typer = null;
+      var typing = { node: null, text: '' };
 
-      function refresh() {
-        var n = stationCount();
-        counter.textContent = n + '/3';
-        progressFill.style.width = (n / 3 * 100) + '%';
-        stations.forEach(function (s) {
-          if (visited[s.getAttribute('data-station')]) {
-            s.classList.add('is-visited');
-            s.setAttribute('aria-pressed', 'true');
-          }
+      hintEl.textContent = data.hint;
+
+      function render() {
+        levels.forEach(function (l, i) {
+          l.classList.toggle('is-active', i === current);
+          l.setAttribute('aria-hidden', i === current ? 'false' : 'true');
         });
-        if (n >= 3) { complete.hidden = false; }
+        hudTitle.textContent = data.levels[current].title;
+        dots.forEach(function (d, i) {
+          d.classList.toggle('is-done', !!solved[i]);
+          d.classList.toggle('is-current', i === current && !solved[i]);
+        });
       }
 
-      function openStation(id) {
-        visited[id] = true;
-        try { window.localStorage.setItem(KEY, JSON.stringify(visited)); } catch (e) { /* ignore */ }
-        var panel = root.querySelector('[data-panel="' + id + '"]');
-        var title = '';
-        if (panel) {
-          var titleEl = panel.querySelector('h3');
-          title = titleEl ? titleEl.textContent : '';
-          var clone = panel.cloneNode(true);
-          modalBody.innerHTML = '';
-          while (clone.firstChild) { modalBody.appendChild(clone.firstChild); }
+      function stopType() {
+        if (typer) { clearInterval(typer); typer = null; }
+        if (typing.node) {
+          var caret = typing.node.querySelector('.adv-caret');
+          if (caret) { caret.remove(); }
+          typing.node.textContent = typing.text;
         }
-        if (title) { modalCard.setAttribute('aria-label', title); }
-        modal.hidden = false;
-        var closeBtn = modal.querySelector('.adventure-modal-close');
-        if (closeBtn && closeBtn.focus) { closeBtn.focus(); }
-        refresh();
+        typing.node = null;
+        typing.text = '';
       }
 
-      function closeModal() { modal.hidden = true; }
+      function typeText(node, text) {
+        stopType();
+        typing.node = node;
+        typing.text = text;
+        var caret = document.createElement('span');
+        caret.className = 'adv-caret';
+        caret.setAttribute('aria-hidden', 'true');
+        node.textContent = '';
+        node.appendChild(caret);
+        var i = 0;
+        typer = setInterval(function () {
+          caret.insertAdjacentText('beforebegin', text.charAt(i));
+          i++;
+          if (i >= text.length) { stopType(); }
+        }, 13);
+      }
 
-      stations.forEach(function (s) {
-        s.addEventListener('click', function () { openStation(s.getAttribute('data-station')); });
-        s.addEventListener('keydown', function (e) {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            openStation(s.getAttribute('data-station'));
-          }
+      function openDialog(spot, el) {
+        dialogChar.innerHTML = '<i class="fas ' + spot.icon + '" aria-hidden="true"></i><span>' + spot.label + '</span>';
+        typeText(dialogText, spot.text);
+        if (spot.type === 'quest') {
+          dialogBtn.textContent = spot.btn;
+          dialogBtn.hidden = false;
+        } else {
+          dialogBtn.hidden = true;
+        }
+        dialog.classList.add('is-open');
+        dialog.setAttribute('aria-hidden', 'false');
+      }
+
+      function closeDialog() {
+        stopType();
+        dialog.classList.remove('is-open');
+        dialog.setAttribute('aria-hidden', 'true');
+      }
+
+      function onSpot(idx, spot) {
+        openDialog(spot);
+      }
+
+      function build(levelEl, idx, levelData) {
+        levelData.hotspots.forEach(function (spot) {
+          var b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'adv-spot' + (spot.type === 'quest' ? ' is-quest' : '');
+          b.style.left = spot.x + '%';
+          b.style.top = spot.y + '%';
+          b.setAttribute('aria-label', spot.label);
+          var badge = spot.type === 'quest'
+            ? '<span class="adv-badge">' + data.questBadge + '</span>'
+            : '';
+          b.innerHTML = '<span class="adv-icondisc"><i class="fas ' + spot.icon + '" aria-hidden="true"></i>' + badge + '</span><small>' + spot.label + '</small>';
+          b.addEventListener('click', function () { onSpot(idx, spot); });
+          levelEl.appendChild(b);
         });
+      }
+
+      data.levels.forEach(function (levelData, idx) {
+        build(levels[idx], idx, levelData);
       });
 
-      root.querySelectorAll('[data-modal-close]').forEach(function (el) {
-        el.addEventListener('click', closeModal);
+      dialogBtn.addEventListener('click', function () {
+        solved[current] = true;
+        var q = levels[current].querySelector('.adv-spot.is-quest');
+        if (q) {
+          q.classList.add('is-solved');
+          var badge = q.querySelector('.adv-badge');
+          if (badge) {
+            badge.className = 'adv-badge adv-badge--ok';
+            badge.innerHTML = '<i class="fas fa-check" aria-hidden="true"></i>';
+          }
+        }
+        render();
+        if (current === data.levels.length - 1) {
+          window.location.href = data.home;
+          return;
+        }
+        closeDialog();
+        current++;
+        render();
       });
 
+      closeBtn.addEventListener('click', closeDialog);
+      dialog.addEventListener('click', function (e) {
+        if (e.target === dialog) { closeDialog(); }
+      });
+      dialogText.addEventListener('click', stopType);
       document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && !modal.hidden) { closeModal(); }
+        if (e.key === 'Escape') { closeDialog(); }
       });
 
-      refresh();
+      render();
     })();
   </script>
 </div>
