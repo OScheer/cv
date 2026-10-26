@@ -92,7 +92,7 @@
             <a
               class="nav-dropdown-link {{ if $active }}active{{- end -}}"
               {{ if findRE `^http` .URL }}
-              target="_blank" rel="noopener"
+              target="_blank" rel="noopener noreferrer"
               {{ end }}
               href="{{$url}}">
               {{ .Name }}
@@ -115,7 +115,7 @@
         <a
           class="nav-link {{ if $active }}active{{- end -}}"
           {{ if findRE `^http` .URL }}
-          target="_blank" rel="noopener"
+          target="_blank" rel="noopener noreferrer"
           {{ end }}
           href="{{$url}}"
         >{{ .Name }}</a

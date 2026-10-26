@@ -10,9 +10,9 @@
     "pagefind": "pagefind --site public"
   },
   "dependencies": {
-    "@tailwindcss/typography": "^0.5.10",
+    "@tailwindcss/typography": "^0.5.20",
     "pagefind": "^1.4.0",
-    "preact": "^10.27.2"
+    "preact": "^10.29.8"
   },
   "main": "index.js",
   "keywords": [],
@@ -20,7 +20,13 @@
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
-    "@tailwindcss/cli": "^4.2.2",
-    "tailwindcss": "^4.2.2"
+    "@tailwindcss/cli": "^4.3.3",
+    "tailwindcss": "^4.3.3"
+  },
+  "pnpm": {
+    "overrides": {
+      "picomatch": "^2.3.2",
+      "postcss-selector-parser": "^6.1.5"
+    }
   }
 }
